@@ -3,13 +3,14 @@
 
 void printHelpMessage()
 {
-    std::cout << "Use: ./hot_cold [<valor_limite>]\n";
-    std::cout << "===================================================\n";
-    std::cout << "Welcome to the Hot-Cold Guess game, copyright 2020.\n";
+    std::cout << "Use: ./hot_cold [<range_limit>]\n";
 }
 
 void printStartMessage(short limit)
 {
+    std::cout << "===================================================\n";
+    std::cout << "Welcome to the Hot-Cold Guess game, copyright 2020.\n";
+    std::cout << "===================================================\n";
     std::cout << "---------------------------------------------------\n";
     std::cout << "These are the game rules:\n";
     std::cout << "* I’ll choose a random number in [1," << limit << "]. Your job is to guess that number.\n";
@@ -23,13 +24,13 @@ void printStartMessage(short limit)
 
 int main(int argc, char *argv[])
 {
-    // constexpr std::array<size_t, n> a;
     constexpr short default_limit{30};
     short limit;
 
     if (argc == 1)
     {
         printHelpMessage();
+        exit(0);
     }
     else if (argc == 2)
     {
