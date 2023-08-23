@@ -48,18 +48,42 @@ int main(int argc, char *argv[])
 
     int secret = std::rand() % limit + 1;
 
-    std::cout << secret << std::endl;
+    int prev = secret;
 
-    // int prev = secret;
+    std::cout << ">>> Guess the number: ";
 
-    // while (prev >= 0) {
-    //     int guess;
-    //     std::cin >> guess;
-    //     if (guess == secret) {
-    //         std::cout << "Yeah, correct guess!\n";
-    //     } else if (guess )
+    while (true)
+    {
+        int guess;
 
-    // }
+        std::cin >> guess;
+
+        if (guess < 0)
+        {
+            exit(0);
+        }
+
+        int distance_guess = (guess > secret) ? guess - secret : secret - guess;
+        int distance_prev = (prev > secret) ? prev - secret : secret - prev;
+
+        if (guess == secret)
+        {
+            std::cout << ">>> Yeah, correct guess!\n";
+            std::cout << "Thanks for playing!\n";
+
+            exit(0);
+        }
+        else if (distance_guess <= distance_prev)
+        {
+            std::cout << ">>> Nop, it’s hot though, try again: ";
+        }
+        else
+        {
+            std::cout << ">>> Nop, it’s getting cold, try again: ";
+        }
+
+        prev = guess;
+    }
 
     return 0;
 }
