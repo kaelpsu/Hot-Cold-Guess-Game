@@ -1,11 +1,30 @@
+/**
+ * @author Kael Paraguassu
+ * @brief Implementation of the Hot-Cold Guess Game
+ * @version 0.1
+ * @date 2023-08-25
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include <iostream>
 #include <array>
 
+/**
+ * @brief Prints the help message in terminal.
+ * 
+ */
 void printHelpMessage()
 {
     std::cout << "Use: ./hot_cold [<range_limit>]\n";
 }
 
+/**
+ * @brief Prints the start message with the game instructions in terminal.
+ * 
+ * @param limit Limit of the range in which the secret number will be.
+ */
 void printStartMessage(short limit)
 {
     std::cout << "===================================================\n";
@@ -22,40 +41,48 @@ void printStartMessage(short limit)
     std::cout << "----------------------------------------------------\n";
 }
 
+/**
+ * @brief Generates a random number in the range [1, limit].
+ * 
+ * @param secret Variable which will receive a random generated number.
+ * @param limit Limit of the range in which the secret number will be.
+ */
+void generateSecret(short &secret, short limit) {
+    std::srand(time(NULL));
+
+    secret = std::rand() % limit + 1;
+
+}
+
 int main(int argc, char *argv[])
 {
-    constexpr short default_limit{30};
-    short limit;
+    short new_limit;
 
-    if (argc == 1)
+    if (argc == 2)
     {
-        printHelpMessage();
-        exit(0);
-    }
-    else if (argc == 2)
-    {
-        limit = std::stoi(argv[1]);
-        printStartMessage(limit);
+        new_limit = std::stoi(argv[1]); ///< Converts the user string input to the short type
+        printStartMessage(new_limit);
+        
     }
     else
     {
-        std::cout << ">>> EXCESSIVE ARGUMENTS.\n";
         printHelpMessage();
-
-        exit(1);
+        exit(0);
+        
     }
 
-    std::srand(time(NULL));
+    short secret_number;
 
-    int secret = std::rand() % limit + 1;
+    generateSecret(secret_number, new_limit);
 
-    int prev = secret;
+    short previous_guess = secret_number;
 
     std::cout << ">>> Guess the number: ";
-
+    
+    /// Game loop. Ends when user inputs a negative number.
     while (true)
     {
-        int guess;
+        short guess;
 
         std::cin >> guess;
 
@@ -64,10 +91,11 @@ int main(int argc, char *argv[])
             exit(0);
         }
 
-        int distance_guess = (guess > secret) ? guess - secret : secret - guess;
-        int distance_prev = (prev > secret) ? prev - secret : secret - prev;
+        
+        short distance_guess = (guess > secret_number) ? guess - secret_number : secret_number - guess;
+        short distance_prev = (previous_guess > secret_number) ? previous_guess - secret_number : secret_number - previous_guess;
 
-        if (guess == secret)
+        if (guess == secret_number)
         {
             std::cout << ">>> Yeah, correct guess!\n";
             std::cout << "Thanks for playing!\n";
@@ -83,7 +111,7 @@ int main(int argc, char *argv[])
             std::cout << ">>> Nop, it’s getting cold, try again: ";
         }
 
-        prev = guess;
+        previous_guess = guess;
     }
 
     return 0;
